@@ -1,0 +1,26 @@
+{
+  "name": "manualapp",
+  "version": "0.0.1",
+  "authors": [
+    "Slavi Nikolov <slavchonik@gmail.com>"
+  ],
+  "description": "MEAN Steak App",
+  "main": "server.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "toastr": "~2.0.3",
+    "angular": "~1.2.25",
+    "angular-resource": "~1.2.25",
+    "angular-route": "~1.2.25",
+    "foundation": "~5.4.4"
+  }
+}
