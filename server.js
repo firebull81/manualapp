@@ -3,8 +3,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     morgan = require('morgan'),
     mongoose = require('mongoose'),
-    port = 3030,
-    evn = process.env.NODE_ENV || 'development',
+    env = process.env.NODE_ENV || 'development',
+    port = process.env.PORT || 3030,
     app = express();
 
 app.set('view engine', 'jade');
@@ -25,7 +25,12 @@ app.use(stylus.middleware(
 ));
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect('mongodb://localhost/manualapp');
+if (env == 'development') {
+    mongoose.connect('mongodb://localhost/manualapp');
+}
+else {
+    mongoose.connect('mongodb://ManualApp:CrossBull81@ds033400.mongolab.com:33400/manualapp');
+}
 var db = mongoose.connection;
 
 db.once('open', function(err){
@@ -42,7 +47,7 @@ db.on('error', function (err) {
 
 var messageSchema = mongoose.Schema({
     message: String
-})
+});
 
 var Message = mongoose.model('Message', messageSchema);
 var messageFromDatabase;
@@ -68,3 +73,5 @@ app.get('*', function(req, res) {
 app.listen(port);
 
 console.log('Server running on port ' + port);
+
+console.log(env);
