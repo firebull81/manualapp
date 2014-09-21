@@ -1,5 +1,25 @@
 extends includes/layout
 block main-content
-    h2 Hi from index
-    div(ng-view)
-    h3= message
+  header.contain-to-grid.sticky
+    nav.top-bar(data-topbar rel="navigation" data-options="sticky_on: large")
+      ul.title-area
+        li.name
+          h1
+            a(href="/") Manual App
+        li.toggle-topbar.menu-icon
+          a(href="#")
+            span Menu
+      section.top-bar-section
+        ul.left
+          li.divider
+          li
+            a(href="/") Home
+  .row
+    .large-12.columns
+      div(ng-view)
+
+  footer
+    hr
+    .row
+      .large-12.columns
+        p.text-center &copy; Manual App 2014

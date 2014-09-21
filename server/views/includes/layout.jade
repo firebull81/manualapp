@@ -1,24 +1,14 @@
 doctype
 html
-    head
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Manual App
+    link(rel='stylesheet' href='/lib/foundation/css/foundation.css')
+    link(rel='stylesheet' href='/lib/toastr/toastr.css')
+    link(rel='stylesheet' href='/css/site.css')
+    script(type='text/javascript' src='/lib/foundation/js/vendor/modernizr.js')
 
-        meta(charset="utf-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        title Manual App
-        link(rel='stylesheet' href='/lib/foundation/css/foundation.css')
-        link(rel='stylesheet' href='/lib/toastr/toastr.css')
-        link(rel='stylesheet' href='/css/site.css')
-        script(type='text/javascript' src='/lib/foundation/js/vendor/modernizr.js')
-
-    body(ng-app='app')
-        .row
-            .large-12.columns
-                .panel
-                    .row
-                        .large-6.columns.text-center
-                            h1 Hi from Layout
-                        .large-6.columns.text-center
-                            block main-content
-                img(src='http://lorempixel.com/1000/500')
-
-        include scripts
+  body(ng-app='app')
+    block main-content
+    include scripts
