@@ -1,4 +1,4 @@
-
+var passport = require('passport');
 
 module.exports = function(app) {
   app.get('/partials/:partialArea/:partialName', function (req, res) {
