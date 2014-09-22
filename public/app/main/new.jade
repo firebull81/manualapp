@@ -1,0 +1,4 @@
+div(ng-repeat="course in courses | orderBy: '-published' | limitTo: 10")
+  .row
+    .medium-5.columns {{course.published | date: 'mediumDate'}}
+    .medium-7.columns {{course.name}}
