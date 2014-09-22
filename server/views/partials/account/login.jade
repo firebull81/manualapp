@@ -1,0 +1,10 @@
+ul.right
+  li.has-form
+    form
+      .row.collapse
+        .large-5.medium-6.columns
+          input(type="text" placeholder="Username" ng-model="user.username")
+        .large-5.medium-6.columns
+          input(type="password" placeholder="Password" ng-model="user.password")
+        .large-2.medium-12.columns
+          button(ng-click="login(user)") Login
