@@ -15,7 +15,15 @@ module.exports = function(app, config) {
   }));
   app.use(bodyParser.json());
   app.use(morgan('combined'));
-  app.use(session());
+  app.use(session({secret: 'magic unicorns'}));
+  /* app.use(session({
+    secret: cookie_secret,
+    name: cookie_name,
+    store: sessionStore, // connect-mongo session store
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
+  })); */
   app.use(stylus.middleware(
       {
         src: config.rootPath + '/public',
