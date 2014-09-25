@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
     passport = require('passport'),
+    crypto = require('crypto'),
     LocalPassport = require('passport-local');
 
 module.exports = function(config) {
@@ -22,10 +23,18 @@ module.exports = function(config) {
   var userSchema = mongoose.Schema({
     username: String,
     firstName: String,
-    lastName: String
-    /* salt: String,
-    hashPass: String */
+    lastName: String,
+    salt: String,
+    hashPass: String
   });
+
+  userSchema.method({
+    authenticate: function(password){
+      if(generateHashedPassword(this.salt, password) === this.hashPass) {
+        return true;
+      }
+    }
+  })
 
   var User = mongoose.model('User', userSchema);
 
@@ -36,11 +45,22 @@ module.exports = function(config) {
     }
 
     if(collection.length === 0){
-      User.create({username: 'test', firstName: 'Slavi', lastName: 'Nikolov'});
+      var salt;
+      var hashedPwd;
+
+      salt = generateSalt();
+      hashedPwd = generateHashedPassword(salt, 'Slavi');
+      User.create({username: 'test', firstName: 'Slavi', lastName: 'Nikolov', salt: salt, hashPass: hashedPwd});
+      salt = generateSalt();
+      hashedPwd = generateHashedPassword(salt, 'Test');
       User.create({username: 'test1', firstName: 'Test', lastName: 'Name'});
+      salt = generateSalt();
+      hashedPwd = generateHashedPassword(salt, 'Test1');
       User.create({username: 'test2', firstName: 'Test1', lastName: 'Name1'});
       console.log('Users added to DataBase... ')
     }
+
+
   });
 
   passport.use(new LocalPassport(function(username, password, done){
@@ -79,3 +99,12 @@ module.exports = function(config) {
     })
   });
 };
+
+function generateSalt() {
+  return crypto.randomBytes(128).toString('base64');
+}
+
+function generateHashedPassword(salt, pwd) {
+  var hmac = crypto.createHmac('sha1', salt);
+  return hmac.update(pwd).digest('hex');
+}
