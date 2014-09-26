@@ -1,6 +1,6 @@
 'use strict'
 
-app.controller('MainController', function($scope){
+app.controller('mainCtrl', function($scope){
   $scope.courses = [
   {name: 'Course #1', featured: true, published: new Date('10/5/2013')},
   {name: 'Course #2', featured: true, published: new Date('10/6/2013')},

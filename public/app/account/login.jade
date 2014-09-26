@@ -12,3 +12,5 @@ ul.right(ng-controller="LoginCtrl")
     a() {{identity.currentUser.firstName + " " + identity.currentUser.lastName}}
   li(ng-show="identity.isAuthenticated()")
     a.button(href="#" ng-click="logout()") Sign Out
+  li(ng-show="identity.currentUser.isAdmin()")
+    a(href="#/admin/users") Users

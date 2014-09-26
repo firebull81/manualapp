@@ -1,7 +1,5 @@
 var mongoose = require('mongoose'),
-    passport = require('passport'),
-    crypto = require('crypto'),
-    LocalPassport = require('passport-local');
+    crypto = require('crypto');
 
 module.exports = function(config) {
   mongoose.connect(config.db);
@@ -25,7 +23,8 @@ module.exports = function(config) {
     firstName: String,
     lastName: String,
     salt: String,
-    hashPass: String
+    hashPass: String,
+    roles: [String]
   });
 
   userSchema.method({
@@ -50,53 +49,15 @@ module.exports = function(config) {
 
       salt = generateSalt();
       hashedPwd = generateHashedPassword(salt, 'Slavi');
-      User.create({username: 'test', firstName: 'Slavi', lastName: 'Nikolov', salt: salt, hashPass: hashedPwd});
+      User.create({username: 'test', firstName: 'Slavi', lastName: 'Nikolov', salt: salt, hashPass: hashedPwd, roles: ['admin']});
       salt = generateSalt();
       hashedPwd = generateHashedPassword(salt, 'Test');
-      User.create({username: 'test1', firstName: 'Test', lastName: 'Name'});
+      User.create({username: 'test1', firstName: 'Test', lastName: 'Name', salt: salt, hashPass: hashedPwd, roles: ['standard']});
       salt = generateSalt();
       hashedPwd = generateHashedPassword(salt, 'Test1');
-      User.create({username: 'test2', firstName: 'Test1', lastName: 'Name1'});
+      User.create({username: 'test2', firstName: 'Test1', lastName: 'Name1', salt: salt, hashPass: hashedPwd, roles: ['moderator']});
       console.log('Users added to DataBase... ')
     }
-
-
-  });
-
-  passport.use(new LocalPassport(function(username, password, done){
-    User.findOne({username: username}).exec(function(err, user){
-      if(err){
-        console.log('Error loading user: ' + err);
-        return;
-      }
-      if(user){
-        return done(null, user);
-      }
-      else {
-        return done(null, false);
-      }
-    })
-  }));
-
-  passport.serializeUser(function(user,done){
-    if(user){
-      done(null, user._id);
-    }
-  });
-
-  passport.deserializeUser(function(id,done){
-    User.findOne({_id: id}).exec(function(err,user){
-      if(err){
-        console.log('Error loading user: ' + err);
-        return;
-      }
-      if(user){
-        return done(null, user);
-      }
-      else {
-        return done(null, false);
-      }
-    })
   });
 };
 
