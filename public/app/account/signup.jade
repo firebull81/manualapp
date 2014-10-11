@@ -1,0 +1,21 @@
+.row
+  .large-12.columns
+    //.panel
+    form(name="signUpForm")
+      fieldset
+        legend Create user
+        .row
+          .large-6.middle-6.columns
+            input.radius(type="text" placeholder="First Name" ng-model="user.firstName" required)
+          .large-6.middle-6.columns
+            input.radius(type="text" placeholder="Last Name" ng-model="user.lastName" required)
+        .row
+          .large-6.middle-6.columns
+            input.radius(type="text" placeholder="Username" ng-model="user.username" required)
+          .large-6.middle-6.columns
+            input.radius(type="password" placeholder="Password" ng-model="user.password" required)
+        .row
+          .large-6.middle-6.columns.text-center
+            a.button.small.success.radius(href="#" ng-click="signup()" ng-disabled="signUpForm.$invalid") Create
+          .large-6.middle-6.columns.text-center
+            a.button.small.alert.radius(href="#/") Clear

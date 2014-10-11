@@ -1,7 +1,7 @@
 app.factory('identity', function($window, UsersResource){
   var user;
   if($window.foundationUserObject){
-    user = UsersResource();
+    user = UsersResource;
     angular.extend(user, $window.foundationUserObject);
   }
   return {
@@ -10,7 +10,7 @@ app.factory('identity', function($window, UsersResource){
       return !!this.currentUser;
     },
     isAuthorizedForRole: function (role) {
-      return !!this.currentUser && !!this.currentUser.roles.indexOf(role) > -1;
+      return !!this.currentUser && this.currentUser.roles.indexOf(role) > -1;
     }
   }
 });

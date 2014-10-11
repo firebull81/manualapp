@@ -16,6 +16,10 @@ app.config(function($routeProvider, $locationProvider){
       templateUrl: '/partials/main/home',
       controller: 'mainCtrl'
     })
+    .when('/signup', {
+        templateUrl: '/partials/account/signup',
+        controller: 'signUpCtrl'
+      })
     .when('/admin/users',{
       templateUrl: '/partials/admin/users-list',
       controller: 'userListCtrl',

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-    crypto = require('crypto');
+    encryption = require('../utilities/encryption');
 
 module.exports = function(config) {
   mongoose.connect(config.db);
@@ -29,11 +29,13 @@ module.exports = function(config) {
 
   userSchema.method({
     authenticate: function(password){
-      if(generateHashedPassword(this.salt, password) === this.hashPass) {
+      console.log(encryption.generateHashedPassword(this.salt, password));
+      console.log(this.hashPass);
+      if(encryption.generateHashedPassword(this.salt, password) === this.hashPass) {
         return true;
       }
     }
-  })
+  });
 
   var User = mongoose.model('User', userSchema);
 
@@ -47,25 +49,16 @@ module.exports = function(config) {
       var salt;
       var hashedPwd;
 
-      salt = generateSalt();
-      hashedPwd = generateHashedPassword(salt, 'Slavi');
+      salt = encryption.generateSalt();
+      hashedPwd = encryption.generateHashedPassword(salt, 'Slavi');
       User.create({username: 'test', firstName: 'Slavi', lastName: 'Nikolov', salt: salt, hashPass: hashedPwd, roles: ['admin']});
-      salt = generateSalt();
-      hashedPwd = generateHashedPassword(salt, 'Test');
+      salt = encryption.generateSalt();
+      hashedPwd = encryption.generateHashedPassword(salt, 'Test');
       User.create({username: 'test1', firstName: 'Test', lastName: 'Name', salt: salt, hashPass: hashedPwd, roles: ['standard']});
-      salt = generateSalt();
-      hashedPwd = generateHashedPassword(salt, 'Test1');
+      salt = encryption.generateSalt();
+      hashedPwd = encryption.generateHashedPassword(salt, 'Test1');
       User.create({username: 'test2', firstName: 'Test1', lastName: 'Name1', salt: salt, hashPass: hashedPwd, roles: ['moderator']});
       console.log('Users added to DataBase... ')
     }
   });
 };
-
-function generateSalt() {
-  return crypto.randomBytes(128).toString('base64');
-}
-
-function generateHashedPassword(salt, pwd) {
-  var hmac = crypto.createHmac('sha1', salt);
-  return hmac.update(pwd).digest('hex');
-}
