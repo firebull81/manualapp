@@ -1,0 +1,13 @@
+table(role="grid" width="100%")
+  thead
+    tr
+      th User Name
+      th First Name
+      th Last Name
+      th Role
+  tbody
+    tr(ng-repeat="user in users | orderBy: 'roles'")
+      td {{ user.username }}
+      td {{ user.firstName }}
+      td {{ user.lastName }}
+      td {{ user.roles }}

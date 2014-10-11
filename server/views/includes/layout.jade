@@ -5,6 +5,7 @@ html
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Manual App
     link(rel='stylesheet' href='/lib/foundation/css/foundation.css')
+    link(rel='stylesheet' href='/lib/components-font-awesome/css/font-awesome.min.css')
     link(rel='stylesheet' href='/lib/toastr/toastr.css')
     link(rel='stylesheet' href='/css/site.css')
     script(type='text/javascript' src='/lib/foundation/js/vendor/modernizr.js')
@@ -12,3 +13,5 @@ html
   body(ng-app='app' ng-cloak)
     block main-content
     include scripts
+    include currentUser
+

@@ -1,10 +1,19 @@
-ul.right(ng-controller="LoginCtrl")
-  li.has-form
-    form
-      .row.collapse
-        .large-5.medium-6.columns
-          input(type="text" placeholder="Username" ng-model="user.username")
-        .large-5.medium-6.columns
-          input(type="password" placeholder="Password" ng-model="user.password")
-        .large-2.medium-12.columns
-          button(ng-click="login(user)") Login
+li.has-form
+  form(ng-hide="identity.isAuthenticated()")
+    .row.collapse
+      .large-5.medium-6.columns
+        input(type="text" placeholder="Username" ng-model="user.username")
+      .large-5.medium-6.columns
+        input(type="password" placeholder="Password" ng-model="user.password")
+      .large-2.medium-12.columns
+        button.expand(ng-click="login(user)") Login
+
+li.has-dropdown(ng-show="identity.isAuthenticated()")
+  a(href="#") {{identity.currentUser.firstName + " " + identity.currentUser.lastName}}
+  ul.dropdown
+    li(ng-show="identity.currentUser.isAdmin()")
+      a(href="#/admin/users") Users
+    li(ng-show="identity.isAuthenticated()")
+      a(href="#" ng-click="logout()") Sign Out
+li
+  a.button(href="#/signup") Sign Up

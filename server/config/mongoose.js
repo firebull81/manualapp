@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'),
-    passport = require('passport'),
-    LocalPassport = require('passport-local');
+    encryption = require('../utilities/encryption');
 
 module.exports = function(config) {
   mongoose.connect(config.db);
@@ -22,9 +21,20 @@ module.exports = function(config) {
   var userSchema = mongoose.Schema({
     username: String,
     firstName: String,
-    lastName: String
-    /* salt: String,
-    hashPass: String */
+    lastName: String,
+    salt: String,
+    hashPass: String,
+    roles: [String]
+  });
+
+  userSchema.method({
+    authenticate: function(password){
+      console.log(encryption.generateHashedPassword(this.salt, password));
+      console.log(this.hashPass);
+      if(encryption.generateHashedPassword(this.salt, password) === this.hashPass) {
+        return true;
+      }
+    }
   });
 
   var User = mongoose.model('User', userSchema);
@@ -36,46 +46,19 @@ module.exports = function(config) {
     }
 
     if(collection.length === 0){
-      User.create({username: 'test', firstName: 'Slavi', lastName: 'Nikolov'});
-      User.create({username: 'test1', firstName: 'Test', lastName: 'Name'});
-      User.create({username: 'test2', firstName: 'Test1', lastName: 'Name1'});
+      var salt;
+      var hashedPwd;
+
+      salt = encryption.generateSalt();
+      hashedPwd = encryption.generateHashedPassword(salt, 'Slavi');
+      User.create({username: 'test', firstName: 'Slavi', lastName: 'Nikolov', salt: salt, hashPass: hashedPwd, roles: ['admin']});
+      salt = encryption.generateSalt();
+      hashedPwd = encryption.generateHashedPassword(salt, 'Test');
+      User.create({username: 'test1', firstName: 'Test', lastName: 'Name', salt: salt, hashPass: hashedPwd, roles: ['standard']});
+      salt = encryption.generateSalt();
+      hashedPwd = encryption.generateHashedPassword(salt, 'Test1');
+      User.create({username: 'test2', firstName: 'Test1', lastName: 'Name1', salt: salt, hashPass: hashedPwd, roles: ['moderator']});
       console.log('Users added to DataBase... ')
     }
-  });
-
-  passport.use(new LocalPassport(function(username, password, done){
-    User.findOne({username: username}).exec(function(err, user){
-      if(err){
-        console.log('Error loading user: ' + err);
-        return;
-      }
-      if(user){
-        return done(null, user);
-      }
-      else {
-        return done(null, false);
-      }
-    })
-  }));
-
-  passport.serializeUser(function(user,done){
-    if(user){
-      done(null, user._id);
-    }
-  });
-
-  passport.deserializeUser(function(id,done){
-    User.findOne({_id: id}).exec(function(err,user){
-      if(err){
-        console.log('Error loading user: ' + err);
-        return;
-      }
-      if(user){
-        return done(null, user);
-      }
-      else {
-        return done(null, false);
-      }
-    })
   });
 };

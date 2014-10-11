@@ -1,7 +1,7 @@
 extends includes/layout
 block main-content
-  header.contain-to-grid.sticky
-    nav.top-bar(data-topbar rel="navigation" data-options="sticky_on: large")
+  header.contain-to-grid
+    nav.top-bar
       ul.title-area
         li.name
           h1
@@ -9,15 +9,16 @@ block main-content
         li.toggle-topbar.menu-icon
           a(href="#")
             span Menu
-      section.top-bar-section
+      .top-bar-section
         ul.left
           li.divider
           li
             a(href="/") Home
-        div(ng-include="'partials/account/login'")
   .row
-    .large-12.columns
+    .large-9.columns
       div(ng-view)
+    aside.large-3.columns(ng-include="'partials/account/side-nav'" ng-controller="LoginCtrl")
+
 
   footer
     hr
